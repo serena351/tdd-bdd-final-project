@@ -72,7 +72,7 @@ class TestProductModel(unittest.TestCase):
 
     def test_create_a_product(self):
         """It should Create a product and assert that it exists"""
-        product = Product(name="Fedora", description="A red hat", price=12.50, available=True, category=Category.CLOTHS)
+        product = Product(name="Fedora", description="A red hat", price=12.50, available=True, category=Category.CLOTHES)
         self.assertEqual(str(product), "<Product Fedora id=[None]>")
         self.assertTrue(product is not None)
         self.assertEqual(product.id, None)
@@ -80,7 +80,7 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(product.description, "A red hat")
         self.assertEqual(product.available, True)
         self.assertEqual(product.price, 12.50)
-        self.assertEqual(product.category, Category.CLOTHS)
+        self.assertEqual(product.category, Category.CLOTHES)
 
     def test_add_a_product(self):
         """It should Create a product and add it to the database"""
@@ -101,6 +101,21 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(new_product.available, product.available)
         self.assertEqual(new_product.category, product.category)
 
-    #
-    # ADD YOUR TEST CASES HERE
-    #
+    def test_read_a_product(self):
+        """It should read a product"""
+        product = ProductFactory()
+        product.id = None
+        product.create()
+        self.assertIsNotNone(product.id)
+        found_product = Product.find(product.id) # fetch product from database
+        self.assertEqual(found_product.id, product.id)
+        self.assertEqual(found_product.name, product.name)
+        self.assertEqual(found_product.description, product.description)
+        self.assertEqual(found_product.price, product.price)
+        self.assertEqual(found_product.available, product.available)
+        self.assertEqual(found_product.category, product.category)
+        
+
+
+
+
