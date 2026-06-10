@@ -118,11 +118,11 @@ class TestProductModel(unittest.TestCase):
     def test_update_product(self):
         """It should update a product"""
         product = ProductFactory()
-        logger.info(str(product)) # log message displaying product for debugging
+        logger.debug("Product: ", str(product)) # log message displaying product for debugging
         product.id = None
         product.create()
         self.assertIsNotNone(product.id)
-        logger.info(str(product))
+        logger.debug("Product: %s", str(product))
         product.description = "Test Description"
         original_id = product.id
         product.update() # update description in database
@@ -134,6 +134,9 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(updated_product.id, product.id)
         self.assertEqual(updated_product.description, "Test Description")
         
-
+    def test_delete_a_product(self):
+        """It should delete a product"""
+        product = ProductFactory()
+        
 
 
