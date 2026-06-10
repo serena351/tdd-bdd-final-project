@@ -118,11 +118,11 @@ class TestProductModel(unittest.TestCase):
     def test_update_product(self):
         """It should update a product"""
         product = ProductFactory()
-        logger.debug("Product: ", str(product)) # log message displaying product for debugging
+        logger.debug("Product details: ", str(product)) # log message displaying product for debugging
         product.id = None
         product.create()
         self.assertIsNotNone(product.id)
-        logger.debug("Product: %s", str(product))
+        logger.debug("Product details: %s", str(product))
         product.description = "Test Description"
         original_id = product.id
         product.update() # update description in database
@@ -137,6 +137,23 @@ class TestProductModel(unittest.TestCase):
     def test_delete_a_product(self):
         """It should delete a product"""
         product = ProductFactory()
+        product.create()
+        products = Product.all()
+        self.assertEqual(len(products), 1)
+        product.delete()
+        products = Product.all()
+        self.assertEqual(len(products), 0)
         
+    def test_list_all_products():
+        """It should list all products in database"""
+        products = Product.all()
+        self.assertEqual(len(products), 0) # assert no products to start with
+        for i in range(5):
+            product = ProductFactory()
+            product.create()               # create 5 products
+        products = Product.all()
+        self.assertEqual(len(products), 5)
+
+
 
 
