@@ -115,7 +115,7 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(found_product.available, product.available)
         self.assertEqual(found_product.category, product.category)
 
-    def test_update_product(self):
+    def test_update_a_product(self):
         """It should update a product"""
         product = ProductFactory()
         logger.debug("Product details: ", str(product)) # log message displaying product for debugging
@@ -144,7 +144,7 @@ class TestProductModel(unittest.TestCase):
         products = Product.all()
         self.assertEqual(len(products), 0)
         
-    def test_list_all_products():
+    def test_list_all_products(self):
         """It should list all products in database"""
         products = Product.all()
         self.assertEqual(len(products), 0) # assert no products to start with
@@ -153,6 +153,20 @@ class TestProductModel(unittest.TestCase):
             product.create()               # create 5 products
         products = Product.all()
         self.assertEqual(len(products), 5)
+
+    def test_find_by_name(self):
+        """It should retrieve products from the database based on their name"""
+        products = ProductFactory.create_batch(5)
+        for product in products:
+            product.create()               
+        product_name = products[0].name
+        product_count = len([product for product in products if product.name == product_name]) # count number of occurrences
+        found_products = Product.find_by_name(product_name)
+        self.assertEqual(found_products.count(), product_count)
+        for product in found_products:
+            self.assertEqual(product.name, product_name)
+        
+
 
 
 
