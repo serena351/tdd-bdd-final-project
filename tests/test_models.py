@@ -166,7 +166,15 @@ class TestProductModel(unittest.TestCase):
         for product in found_products:
             self.assertEqual(product.name, product_name)
         
-
+    def test_find_by_availability(self):
+        """It should list products based on their availability"""
+        products = ProductFactory.create_batch(10)  # create 10 products
+        for product in products:
+            product.create()
+        is_available = products[0].availability
+        num_available = len([product for product in products if product.availability == is_available]) # count products with same availability as first product
+        found_products = Product.find_by_availability(is_available)
+        #self.assertEqual()
 
 
 
