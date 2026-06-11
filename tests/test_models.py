@@ -171,11 +171,23 @@ class TestProductModel(unittest.TestCase):
         products = ProductFactory.create_batch(10)  # create 10 products
         for product in products:
             product.create()
-        is_available = products[0].availability
-        num_available = len([product for product in products if product.availability == is_available]) # count products with same availability as first product
+        is_available = products[0].available
+        num_available = len([product for product in products if product.available == is_available]) # count products with same availability as first product
         found_products = Product.find_by_availability(is_available)
-        #self.assertEqual()
+        self.assertEqual(found_products.count(), num_available)
+        for product in found_products:
+            self.assertEqual(product.available, is_available)
 
-
+    def test_find_by_category(self):
+        """It should retrieve products from the database based on their category"""
+        products = ProductFactory.create_batch(10)  # create 10 products
+        for product in products:
+            product.create()
+        product_cat = products[0].category
+        count = len([product for product in product if product.category == product_cat]) # count products with same category as first product
+        found_products = Product.find_by_category(product_cat)
+        self.assertEqual(found_products.count(), count)
+        for product in found_products:
+            self.assertEqual(product.category, product_cat)
 
 
