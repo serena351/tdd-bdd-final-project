@@ -211,6 +211,11 @@ class TestProductRoutes(TestCase):
 
     def test_get_product_list(self):
       """It should get a list of products"""
+      products = self._create_product(5)
+      response = self.client.get(BASE_URL)
+      self.assertEqual(response.status_code, status.HTTP_200_OK)
+      data = response.get_json()
+      self.assertEqual(len(data), 5)
 
     ######################################################################
     # Utility functions
