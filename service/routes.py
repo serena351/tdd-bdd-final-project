@@ -142,9 +142,8 @@ def delete_product(product_id):
     This endpoint will delete a product based on the specified product id"""
     app.logger.info("Request to delete product with id [%s]", product_id)
     product = Product.find(product_id)
-    if not product:
-        abort(status.HTTP_404_NOT_FOUND, f"Product with id {product_id} not found")
-    product.delete()
+    if product:
+        product.delete()
     return "", status.HTTP_204_NO_CONTENT
 
 
