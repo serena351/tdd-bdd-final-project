@@ -159,6 +159,9 @@ class TestProductRoutes(TestCase):
         response = self.client.post(BASE_URL, data={}, content_type="plain/text")
         self.assertEqual(response.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
+    # ----------------------------------------------------------
+    # TEST READ
+    # ----------------------------------------------------------
     def test_get_product(self):
       """It should get a product"""
       test_product = self._create_products(1)[0]
@@ -174,6 +177,9 @@ class TestProductRoutes(TestCase):
       data = response.get_json()
       self.assertIn("not found", data["message"])
 
+    # ----------------------------------------------------------
+    # TEST UPDATE
+    # ----------------------------------------------------------
     def test_update_product(self):
       """It should update an existing product"""
       test_product = ProductFactory()
@@ -186,6 +192,9 @@ class TestProductRoutes(TestCase):
       updated_product = response.get_json()
       self.assertEqual(updated_product["description"], "unknown")
 
+    # ----------------------------------------------------------
+    # TEST DELETE
+    # ----------------------------------------------------------
     def test_delete_product(self):
       """It should delete a product"""
       products = self._create_product(5)
@@ -198,6 +207,10 @@ class TestProductRoutes(TestCase):
       self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
       newcount = self.get_product_count()
       self.assertEqual(newcount, count - 1)
+
+
+    def test_get_product_list(self):
+      """It should get a list of products"""
 
     ######################################################################
     # Utility functions
