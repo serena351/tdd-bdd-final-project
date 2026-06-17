@@ -238,12 +238,12 @@ class TestProductRoutes(TestCase):
       found = [product for product in products if product.category == test_category]
       found_count = len(found)
       logging.debug("Number of products: [%d] ... %s", found_count, found)
-      response = self.client.get(BASE_URL, query_string=f"category={category.name}")
+      response = self.client.get(BASE_URL, query_string=f"category={test_category.name}")
       self.assertEqual(response.status_code, status.HTTP_200_OK)
       data = response.get_json()
       self.assertEqual(found_count, len(data))
       for product in data:
-        self.assertEqual(product["category"], category.name)
+        self.assertEqual(product["category"], test_category.name)
 
     ######################################################################
     # Utility functions
