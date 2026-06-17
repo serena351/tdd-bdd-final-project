@@ -86,11 +86,7 @@ def create_products():
 
     message = product.serialize()
 
-    #
-    # Uncomment this line of code once you implement READ A PRODUCT
-    #
-    # location_url = url_for("get_products", product_id=product.id, _external=True)
-    location_url = "/"  # delete once READ is implemented
+    location_url = url_for("get_products", product_id=product.id, _external=True)
     return jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
 
 
@@ -103,6 +99,24 @@ def list__all_products():
     This endpoint will list all products"""
     app.logger.info("Request to retrieve all products")
     products = Product.all()
+    product_list = [product.serialize() for product in products]
+    app.logger.info("[%s] products returned", len(product_list))
+    return product_list, status.HTTP_200_OK
+
+@app.route("/products", methods=["GET"])
+def list_by_name():
+    """List products by name
+    This endpoint will list products with the given name"""
+    app.logger.info("Request to list products")
+    products = []
+    product_name = request.args.get("name")
+    if product_name:
+        app.logger.info("List by name")
+        products = Product.find_by_name(product_name)
+    else:
+        app.logger.info("All products")
+        products = Product.all()
+
     product_list = [product.serialize() for product in products]
     app.logger.info("[%s] products returned", len(product_list))
     return product_list, status.HTTP_200_OK
