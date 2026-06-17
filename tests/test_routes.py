@@ -197,7 +197,7 @@ class TestProductRoutes(TestCase):
     # ----------------------------------------------------------
     def test_delete_product(self):
       """It should delete a product"""
-      products = self._create_product(5)
+      products = self._create_products(5)
       count = self.get_product_count()
       test_product = products[0]
       response = self.client.delete(f"{BASE_URL}/{test_product.id}")
@@ -208,10 +208,11 @@ class TestProductRoutes(TestCase):
       newcount = self.get_product_count()
       self.assertEqual(newcount, count - 1)
 
+      ############################################################
 
     def test_get_product_list(self):
       """It should get a list of products"""
-      products = self._create_product(5)
+      products = self._create_products(5)
       response = self.client.get(BASE_URL)
       self.assertEqual(response.status_code, status.HTTP_200_OK)
       data = response.get_json()
