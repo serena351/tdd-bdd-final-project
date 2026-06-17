@@ -111,7 +111,7 @@ def list_by_name():
     products = []
     product_name = request.args.get("name")
     if product_name:
-        app.logger.info("List by name")
+        app.logger.info("Products by name")
         products = Product.find_by_name(product_name)
     else:
         app.logger.info("All products")
@@ -128,15 +128,26 @@ def list_by_category():
     app.logger.info("Request to list products")
     products = []
     name = request.args.get("name")
-    category
-    return
+    category = request.args.get("category")
+    if category:
+        app.logger.info("Products by category: %s", category)
+        category_name = getattr(Category, category.upper())
+        products = Product.find_by_category(category_name)
+    else:
+        app.logger.info("All products")
+        products = Product.all()
+        
+    product_list = [product.serialize() for product in products]
+    app.logger.info("[%s] products returned", len(product_list))
+    return product_list, status.HTTP_200_OK
 
-@app.route()
-def list_by_availability():
-    """List products by availability
-    This endpoint will list products by their availability"""
-    app.logger.info("Request to list products")
-    return
+#@app.route()
+#def list_by_availability():
+#    """List products by availability
+#    This endpoint will list products by their availability"""
+#    app.logger.info("Request to list products")
+#    return ''
+
 
 ######################################################################
 # R E A D   A   P R O D U C T
