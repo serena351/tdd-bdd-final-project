@@ -209,7 +209,9 @@ class TestProductRoutes(TestCase):
       newcount = self.get_product_count()
       self.assertEqual(newcount, count - 1)
 
-      ############################################################
+    # ----------------------------------------------------------
+    # TEST LIST PRODUCTS
+    # ----------------------------------------------------------
 
     def test_get_product_list(self):
       """It should get a list of products"""
@@ -244,6 +246,20 @@ class TestProductRoutes(TestCase):
       self.assertEqual(found_count, len(data))
       for product in data:
         self.assertEqual(product["category"], test_category.name)
+
+    def test_list_by_availability(self):
+      """It should list products based on their availability"""
+      products = self._create_products(10)
+      available_products = [product for product in products if product.available is True]
+      count = len(available_products)
+      logging.debug("Number of available products: [%d] ... %s", count, available_products)
+      response = self.client.get(BASE_URL, query_string="available=True")
+      self.assertEqual(response.status_code, status.HTTP_200_OK)
+      data = response.get_json()
+      self.assertEqual(count, len(data))
+      for product in data:
+        self.assertEqual(product["available"], True)
+      
 
     ######################################################################
     # Utility functions
