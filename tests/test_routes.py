@@ -231,6 +231,11 @@ class TestProductRoutes(TestCase):
       for product in data:
         self.assertEqual(product["name"], test_name)
 
+    def test_list_by_category(self):
+      """It should list products by category"""
+      products = self._create_products(10)
+      test_category = products[0].category
+
     ######################################################################
     # Utility functions
     ######################################################################
