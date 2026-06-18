@@ -94,59 +94,33 @@ def create_products():
 # L I S T   P R O D U C T S
 ######################################################################
 @app.route("/products", methods=["GET"])
-def list__all_products():
-    """List all products
-    This endpoint will list all products"""
-    app.logger.info("Request to retrieve all products")
-    products = Product.all()
-    product_list = [product.serialize() for product in products]
-    app.logger.info("[%s] products returned", len(product_list))
-    return product_list, status.HTTP_200_OK
-
-@app.route("/products", methods=["GET"])
-def list_by_name():
-    """List products by name
-    This endpoint will list products with the given name"""
-    app.logger.info("Request to list products")
-    products = []
-    product_name = request.args.get("name")
-    if product_name:
-        app.logger.info("Products by name")
-        products = Product.find_by_name(product_name)
-    else:
-        app.logger.info("All products")
-        products = Product.all()
-
-    product_list = [product.serialize() for product in products]
-    app.logger.info("[%s] products returned", len(product_list))
-    return product_list, status.HTTP_200_OK
-
-@app.route()
-def list_by_category():
-    """List products by category
-    This endpoint will list products in the given category"""
+def list_products():
+    """List products 
+    This endpoint will list products by their availability, category or name when specified"""
     app.logger.info("Request to list products")
     products = []
     name = request.args.get("name")
     category = request.args.get("category")
-    if category:
+    available = request.args.get("available")
+    
+    if name:
+        app.logger.info("Products by name: %s", name)
+        products = Product.find_by_name(name)
+    elif category:
         app.logger.info("Products by category: %s", category)
         category_name = getattr(Category, category.upper())
         products = Product.find_by_category(category_name)
+    elif available:
+        app.logger.info("Products by availability: %s", available)
+        available_bool = available.lower() in ["true", "yes", "1"]
+        products = Product.find_by_availability(available_bool)
     else:
         app.logger.info("All products")
         products = Product.all()
-        
+
     product_list = [product.serialize() for product in products]
     app.logger.info("[%s] products returned", len(product_list))
     return product_list, status.HTTP_200_OK
-
-#@app.route()
-#def list_by_availability():
-#    """List products by availability
-#    This endpoint will list products by their availability"""
-#    app.logger.info("Request to list products")
-#    return ''
 
 
 ######################################################################
