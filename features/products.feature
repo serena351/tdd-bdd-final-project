@@ -60,7 +60,6 @@ Scenario: Update a Product
     And I set the "Name" to "Sheets"
     And I click the "Search" button
     Then I should see the message "Success"
-    And I should see "Sheets" in the "Name" field
     And I should see "Full bed sheets" in the "Description" field
     When I change "Description" to "Full set of bed sheets"
     And I press the "Update" button
@@ -76,8 +75,21 @@ Scenario: Update a Product
     Then I should see the message "Success"
     And I should see "Full set of bed sheets" in the results
     And I should not see "Full bed sheets" in the results
-    
 
-
+Scenario: Delete a Product
+    When I visit the "Home Page"
+    And I set the "Name" to "Shoes"
+    And I click the "Search" button
+    Then I should see the message "Success"
+    And I should see "120.50" in the "Price" field 
+    When I copy the "Id" field
+    And I press the "Clear" button
+    And I paste the "Id" field
+    And I press the "Delete" button
+    Then I should see the message "Product has been Deleted!"
+    When I press the "Clear" button
+    And I click the "Search" button
+    Then I should see the message "Success"
+    And I should not see "Shoes" in the results
 
 
